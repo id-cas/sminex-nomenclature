@@ -1,0 +1,94 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Nomenclature API"
+  },
+  "host": "sminex.cvvrk.ru:80",
+  "basePath": "/",
+  "schemes": ["https"],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "User login",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": { "type": "string" },
+                "password": { "type": "string" }
+              },
+              "required": ["username", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": { "type": "string" }
+              }
+            }
+          },
+          "401": { "description": "Invalid username or password" }
+        }
+      }
+    },
+    "/api/nomenclature": {
+      "get": {
+        "summary": "Get nomenclature items",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "type": "string",
+            "description": "Filter by nomenclature code"
+          },
+          {
+            "in": "query",
+            "name": "parent_code",
+            "type": "string",
+            "description": "Filter by parent code"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Nomenclature items",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "code": { "type": "string" },
+                  "description": { "type": "string" },
+                  "level": { "type": "integer" },
+                  "path": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
