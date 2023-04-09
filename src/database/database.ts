@@ -4,7 +4,7 @@ import { Sequelize } from 'sequelize';
 const DB_NAME = 'db_sminex';
 const DB_USER = 'usr_sminex';
 const DB_PASSWORD = '?r^WslLdEs!Cej';
-const DB_HOST = '127.0.0.1';
+const DB_HOST = 'db';
 const DB_PORT = 3306;
 
 export const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {

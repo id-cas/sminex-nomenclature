@@ -8,7 +8,12 @@
 * Unit-tests
 * MySQL
 
-## Before use
+## With Docker
+```
+docker-compose up -d
+```
+
+## Without Docker
 * MySQL or MongoDB must be installed into OS
 * In App directory package.json must be inited
 ```
@@ -51,6 +56,11 @@ Link for GET + JWT token https://sminex.cvvrk.ru/api/nomenclature
 │   ├── ...
 │   ├── ...
 │   └── ...
+├── docker-files (Docker initial config files for database and web-server)
+│   ├── init.sql (create database and user for app)
+│   └── nginx.conf (web-server config)
+├── html
+│   └── upload.html (simple UI for nomenclature file uploading)
 ├── src
 │   ├── database
 │   │   ├── database.ts (settings of DB connection, engine control)
@@ -68,10 +78,11 @@ Link for GET + JWT token https://sminex.cvvrk.ru/api/nomenclature
 ├── uploads
 │   ├── nomenclature.csv (example of nomenclature tree)
 │   └── test.csv (test data for npm run test)
+├── docker-compose.yml (docker enviropment file)
+├── Dockerfile (instructions set for image creating)
 ├── package.json (packages and settings of the app)
 ├── swagger.json (swagger docs config)
 ├── tsconfig.json (TypeScript compilation config)
-├── upload.html (simple UI for nomenclature file uploading)
 └── README.md (app description)
 ````
 

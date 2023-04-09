@@ -1,8 +1,7 @@
 import {Nomenclature} from "../database/models/nomenclature";
-import {rejects} from "assert";
+import { parse } from 'csv-parse';
 
 const fs = require('fs');
-const parse = require('csv-parse');
 
 
 export const uploadCsv = async (filePath: string, unlink: boolean = false) => {

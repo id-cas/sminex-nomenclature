@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "title": "Nomenclature API"
   },
-  "host": "sminex.cvvrk.ru:80",
+  "host": "localhost:80",
   "basePath": "/",
   "schemes": ["https"],
   "paths": {

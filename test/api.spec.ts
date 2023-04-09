@@ -8,6 +8,7 @@ import { Nomenclature } from '../src/database/models/nomenclature';
 chai.use(chaiHttp);
 
 let token: string;
+let host: string = process?.env?.APP_HOST || '';
 
 describe('Authentication', () => {
 
@@ -15,7 +16,7 @@ describe('Authentication', () => {
 		it('should return a token on successful login', (done) => {
 			chai
 				.request(app)
-				.post('/auth/login')
+				.post(`${host}/auth/login`)
 				.send({ username: 'testuser', password: 'testpassword' }) // Must be other username/password for Prod
 				.end((err, res) => {
 					expect(err).to.be.null;
@@ -29,7 +30,7 @@ describe('Authentication', () => {
 		it('should return a 401 status on failed login', (done) => {
 			chai
 				.request(app)
-				.post('/auth/login')
+				.post(`${host}/auth/login`)
 				.send({ username: 'wronguser', password: 'wrongpassword' })
 				.end((err, res) => {
 					expect(err).to.be.null;
@@ -43,7 +44,7 @@ describe('Authentication', () => {
 		it('should return a 401 status if no token is provided', (done) => {
 			chai
 				.request(app)
-				.get('/api/nomenclature')
+				.get(`${host}/api/nomenclature`)
 				.end((err, res) => {
 					expect(err).to.be.null;
 					expect(res).to.have.status(401);
@@ -54,7 +55,7 @@ describe('Authentication', () => {
 		it('should return a 401 status if an invalid token is provided', (done) => {
 			chai
 				.request(app)
-				.get('/api/nomenclature')
+				.get(`${host}/api/nomenclature`)
 				.set('Authorization', 'Bearer invalid token')
 				.end((err, res) => {
 					expect(err).to.be.null;
@@ -66,7 +67,7 @@ describe('Authentication', () => {
 		it('should return a 200 status if a valid token is provided', (done) => {
 			chai
 				.request(app)
-				.get('/api/nomenclature')
+				.get(`${host}/api/nomenclature`)
 				.set('Authorization', `Bearer ${token}`)
 				.end((err, res) => {
 					expect(err).to.be.null;
@@ -95,7 +96,7 @@ describe('Upload database test data', () => {
 describe('API Tests', () => {
 	describe('GET /api/nomenclature', () => {
 		it('should return a list of nomenclature', async () => {
-			const res = await chai.request(app).get('/api/nomenclature').set('Authorization', `Bearer ${token}`);
+			const res = await chai.request(app).get(`${host}/api/nomenclature`).set('Authorization', `Bearer ${token}`);
 			expect(res.status).to.equal(200);
 			expect(res.body).to.be.an('array');
 			expect(res.body.length).to.be.greaterThan(0);
@@ -111,7 +112,7 @@ describe('API Tests', () => {
 
 		it('should return nomenclature single code specification', async () => {
 			const code = 'A1010110';
-			const res = await chai.request(app).get(`/api/nomenclature?code=${code}`).set('Authorization', `Bearer ${token}`);
+			const res = await chai.request(app).get(`${host}/api/nomenclature?code=${code}`).set('Authorization', `Bearer ${token}`);
 			expect(res.status).to.equal(200);
 			expect(res.body).to.be.an('array');
 			expect(res.body.length).to.equal(1);
@@ -120,7 +121,7 @@ describe('API Tests', () => {
 
 		it('should return nomenclature filtered by parent_code', async () => {
 			const parentCode = 'A';
-			const res = await chai.request(app).get(`/api/nomenclature?parent_code=${parentCode}`).set('Authorization', `Bearer ${token}`);
+			const res = await chai.request(app).get(`${host}/api/nomenclature?parent_code=${parentCode}`).set('Authorization', `Bearer ${token}`);
 			expect(res.status).to.equal(200);
 			expect(res.body).to.be.an('array');
 
@@ -132,7 +133,7 @@ describe('API Tests', () => {
 
 		it('parents of A1010100 order must be correct order [A, A10, A1010, A1010100] ', async () => {
 			const code = 'A1010100';
-			const res = await chai.request(app).get(`/api/nomenclature?code=${code}`).set('Authorization', `Bearer ${token}`);
+			const res = await chai.request(app).get(`${host}/api/nomenclature?code=${code}`).set('Authorization', `Bearer ${token}`);
 			expect(res.status).to.equal(200);
 			expect(res.body).to.be.an('array');
 
