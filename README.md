@@ -17,7 +17,7 @@ docker-compose up -d
 * MySQL or MongoDB must be installed into OS
 * In App directory package.json must be inited
 ```
-npm init
+npm install
 ```
 * App must be build, then test, then started.
 ```
